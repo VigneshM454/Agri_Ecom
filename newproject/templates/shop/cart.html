@@ -1,0 +1,71 @@
+
+{% include 'shop/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/table.css' %}">    
+    <div class="container d-flex flex-column justify-content-center table-responsive">
+        <h1>Your Cart - Agri Products</h1>
+        {% if cartData %}
+
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Remove Product</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in cartData %}
+                    <tr>
+                        <td>{{data.prodId.name}}</td>
+                        <td><img src="{{data.prodId.image.url}}"/></td>
+                        <td>₹{{data.prodId.price}}</td>
+                        <td class="quantity">{{data.prodCount}}</td>
+                        <td>₹{{data.subTotal}}</td>
+                        <td><a class="btn btn-danger" href="/removeCart/{{data.id}}">Remove</a></td>
+                    </tr>    
+                    {% endfor %}
+                </tbody>
+            </table>        
+            <div class="total">
+                <strong>Total: ₹{{total}}</strong>
+            </div>
+
+            <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+        {% else  %}
+            <h3 class="text-danger my-3 text-center">No products in cart</h3>
+        {% endif %}
+    </div>
+    <script>
+        /*
+        function removeProd(id){
+            fetch('/removeCart/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,  
+                },
+                body: JSON.stringify({
+                    cartId:id
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert('Product deleted from cart')
+                } else {
+                    alert(data.msg);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        }*/
+    </script>
+</body>
+</html>
+{% include 'shop/footer.html' %}
+

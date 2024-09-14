@@ -1,0 +1,207 @@
+{% include 'shop/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <div class="container mt-5">
+        <!-- Product Details Section -->
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{prod.image.url}}" width="100%" alt="Product Image" class="img-fluid">
+            
+          </div>
+    
+          <div class="col-md-6">
+            <h3><b>{{prod.name}}</b></h3>
+            <p class="product-price">₹{{prod.price}}</p>
+            <p>{{prod.description}}</p>
+    
+            <!-- Size and Shipping Information -->
+            <div class="mt-4">
+              <form id="buy-product-form" action="{% url 'buy_product' prod.id %}" method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3 d-flex flex-row justify-content-between">
+                  <label for="quantity" class="form-label w-75">Quantity {{units}}</label>
+                  <div class="input-group d-flex flex-row">
+                    <button type="button" class="btn btn-outline-secondary" id="decr">-</button>
+                    <input type="number" width="50" id="quantity" name="quantity" class="text-center " value="1" min="1"   max="{{prod.prodCount}}"  oninput="validateMax(this)" >
+                    <button type="button" class="btn btn-outline-secondary" id="incr">+</button>
+                  </div>
+                </div>
+  
+                <button class="btn btn-buy-now my-3" type="submit">BUY IT NOW</button>
+              </form>
+            
+              <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+              
+              <button  class="btn btn-primary w-100" onclick="handleCart()">ADD TO CART</button>
+    
+
+              <!--
+              <a href="/checkout/{{prod.id}}" class="btn btn-buy-now mt-3">BUY IT NOW</a>
+            -->
+            </div>
+    
+            <!-- Payment Icons -->
+            <div class="payment-icons mt-3">
+              <p>Guaranteed safe checkout</p>
+              <img src="{% static 'images/amazonimg.svg' %}" alt="Visa">
+              <img src="{% static 'images/mastercardimg.svg' %}" alt="MasterCard">
+              <img src="{% static 'images/applepay.svg' %}" alt="Apple Pay">
+              <img src="{% static 'images/visaimg.svg' %}" alt="Visa">
+              <img src="{% static 'images/paypalpay.svg' %}" alt="PayPal">
+            </div>
+    
+            <!-- Vendor and Product Type -->
+            <div class="mt-4">
+              <p><strong>Type: </strong>{{prod.category}}</p>
+            </div>
+    
+   
+          </div>
+        </div>
+    
+        <!-- Description Section -->
+        <div class="row product-description">
+          <div class="col">
+            <h5>Description</h5>
+            <p>
+              This is a placeholder text for the description. Here you can write about the product details.
+              Include information about the product origin, health benefits, and other relevant details.
+            </p>
+          </div>
+        </div>
+    
+        <!-- Related Products Section -->
+        <div class="row related-products">
+          {% if prodArr %}
+          <div class="col-12">
+            <h2 class="text-center my-4">Related Products</h2>
+            <div class="d-flex justify-content-center gap-3">
+                {% for i in prodArr %}
+                <a href="{{i.id}}" class=" border border-dark relProd d-flex flex-column gap-2" >
+                  <img src="{{i.image.url}}" alt="Related Product 1" class="img-thumbnail mb-1">
+                  <p class="text-center m-0 mt-1">{{i.name}}</p>
+                  <p class="text-center m-0 mb-1">₹{{i.price}}</p>
+                </a>              
+                {% endfor %}
+
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% include 'shop/footer.html' %}
+    <style>
+      .relProd{
+        text-decoration: none;
+        color: black;
+      }
+      .product-price {
+        font-size: 24px;
+        color: #ff6347;
+      }
+      .related-products img {
+        
+        width: 200px;
+        height: 200px;
+      }
+      .product-description {
+        margin-top: 20px;
+      }
+      .related-products {
+        margin-top: 50px;
+      }
+      .btn-buy-now {
+        background-color: #e0d849;
+        border: none;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+      }
+      .payment-icons img {
+        width: 50px;
+        margin: 0 5px;
+      }
+      #quantity{
+          width: 50px;
+          border: none;
+      }
+  </style>
+    <script>
+      let a="{{prod.category|safe}}"
+      console.log('hello')
+      const incrementBtn=document.getElementById('incr')
+      const decrementBtn=document.getElementById('decr')
+      const count=document.getElementById('quantity')
+      const minVal= parseInt(count.min)
+      const maxVal= parseInt(count.max)
+
+      let countVal=parseInt(count.value)
+
+      function validateMax(input){
+      
+        let value=parseInt(input.value)
+        if (value>maxVal){
+          input.value=maxVal
+        }
+        if(value<minVal){
+          input.value=minVal
+        }
+
+      }
+
+      incrementBtn.addEventListener('click',()=>{
+        if(countVal<maxVal){
+          countVal+=1;
+          count.value=countVal
+        }
+      })
+    
+      decrementBtn.addEventListener('click',()=>{
+        if(countVal>minVal){
+          countVal-=1;
+          count.value=countVal
+        }
+      })
+
+      //href="/showProduct/{{i.category}}/{{i.id}}"
+
+
+
+
+      function handleCart(){
+        const csrfToken=document.getElementById('csrf_token').value
+        const productId=parseInt("{{ prod.id | safe }}")
+        console.log('productId is '+productId)
+        
+        fetch('/add-to-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,  
+            },
+            body: JSON.stringify({
+                prodId: parseInt(productId),prodCount:countVal
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                alert('Product added to cart Successfully')
+            } else {
+              alert(data.msg);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+       
+      }        
+
+        
+
+
+    </script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

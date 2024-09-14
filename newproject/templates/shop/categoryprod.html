@@ -1,0 +1,74 @@
+{% include 'shop/header.html' %}
+{% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <div class="container containerDemo">
+        <h3 class="text-center mt-3"><b>{{prodType}}</b></h3>
+        <div class="d-flex  flex-row flex-wrap  p-3 gap-3">
+
+            {% if prodArr %}
+              {% for i in prodArr %}
+                <div class="card " style="width: 18rem;" id="{{i.id}}">
+                  <img src="{{i.image.url}}" class="card-img-top" alt="..." height="180" width="80" id="{{i.category}}">
+                  <div class="card-body p-2">
+                    <h5 class="card-title text-center">{{i.name}}</h5>
+                  </div>
+                  <div class="card-body d-flex flex-column p-2">
+                    <p class="card-link w-100 text-center"><b>₹{{i.price}}/-</b></p>
+                    <a href="/showProduct/{{i.category}}/{{i.id}}" class="card-link btn btn-outline-dark m-0 ">View</a>
+                  </div>
+                </div>
+              {% endfor %}
+           {% endif %}
+
+           
+
+        </div>
+    </div>
+    {% include 'shop/footer.html' %}
+    <style>
+      .containerDemo{
+        min-height: 80vh;
+      }
+      .product-price {
+        font-size: 24px;
+        color: #ff6347;
+      }
+      .related-products img {
+        max-width: 100px;
+        height: auto;
+      }
+      .product-description {
+        margin-top: 20px;
+      }
+      .related-products {
+        margin-top: 50px;
+      }
+      .btn-buy-now {
+        background-color: #e0d849;
+        border: none;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+      }
+      .payment-icons img {
+        width: 50px;
+        margin: 0 5px;
+      }
+      .footer {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+        text-align: center;
+      }
+      #quantity{
+          width: 50px;
+          border: none;
+      }
+      .card-demo{
+          gap:5px
+      }
+  </style>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

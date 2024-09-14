@@ -1,0 +1,260 @@
+{% include 'shop/header.html' %}
+{% load static %}
+    <!-- Hero Image Section -->
+    <section class="hero">
+        <div>
+            <h1>Quality Agriculture Products</h1>
+            <p>Providing the best solutions for modern farming</p>
+            <button onclick="window.location.href='#content'">Shop Now</button>
+        </div>
+    </section>
+
+    <!-- Chatbot Icon, Label, and Chatbot Window -->
+    <div class="chatbot-label">Chat with me!</div>
+    <div class="chatbot-icon" onclick="toggleChatbot()"></div>
+    <div class="chatbot" id="chatbot">
+      <iframe width="350" height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/dcf401c9-08e5-4cab-a625-59388ac680b0"></iframe>
+  
+    </div>
+
+    <!-- Main Content Section -->
+    <section class="content" id="content">
+        <h2>Our Categories</h2>
+        <div class="categories">
+            <div class="category-card">
+                <img src="{% static 'images/seeds.jpg' %}" alt="Seeds">
+                <h3>Seeds</h3>
+                <p>High-quality seeds for a great harvest.</p>
+                <a href="/listProduct/seeds" class="btn btn-primary">View Products</a>
+            </div>
+            <div class="category-card">
+                <img src="{% static 'images/machinery.png' %}" alt="Machinery">
+                <h3>Machinery</h3>
+                <p>Modern machinery for efficient farming.</p>
+                <a href="/listProduct/machines" class="btn btn-primary">View Machinery</a>
+            </div>
+            <div class="category-card">
+                <img src="{% static 'images/fertilizer.jpg' %}" alt="Fertilizers">
+                <h3>Fertilizers</h3>
+                <p>Organic and chemical fertilizers for soil health.</p>
+                <a href="/listProduct/fertilizer" class="btn btn-primary">View Fertilizers</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   {% include 'shop/footer.html' %}
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4CAF50;
+            padding: 15px;
+        }
+
+        .navbar-brand h1 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .navbar-nav li {
+            margin-left: 20px;
+        }
+
+        .navbar-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .navbar-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Image Section */
+        .hero {
+            background-image: url("{% static 'images/front.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .hero button {
+            padding: 15px 30px;
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #ff5733;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-image: url("{% static 'images/chatbotlogo.jpg' %}"); /* Replace with your chatbot logo URL */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chatbot-label {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 999;
+        }
+
+        .chatbot iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .category-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .category-card h3 {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+
+        .category-card p {
+            color: #777;
+        }
+
+        .category-card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .category-card a:hover {
+            background-color: #388e3c;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+    <script>
+        function toggleChatbot() {
+            var chatbot = document.getElementById('chatbot');
+            if (chatbot.style.display === 'none' || chatbot.style.display === '') {
+                chatbot.style.display = 'block';
+            } else {
+                chatbot.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

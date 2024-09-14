@@ -1,0 +1,146 @@
+{% include 'shop/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/table.css' %}">
+<style>
+    .payment-form {
+        width: 90%;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table{
+        width: 100%;
+    }
+    .order-summary, .payment-method {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+</style>
+
+<!-- Payment Form Section -->
+<section class="payment-form">
+    <h2>Complete Your Purchase</h2>
+    <div class="order-summary table-responsive">
+        <h3>Order Summary</h3>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>GST</th>
+                    <th>Shipping</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if single %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{prices.gst}}</td>
+                    <td>{{prices.shipPrice}}</td>
+                    <td>{{prices.total}}</td>
+                </tr>
+                {% else %}
+                {% for p in prodArr %}
+                <tr>
+                    <td>{{p.prod.name}}</td>
+                    <td>{{p.prod.price}}</td>
+                    <td>{{p.qty}}</td>
+                    <td>{{p.gst}}</td>
+                    <td>{{p.shipPrice}}</td>
+                    <td>{{p.total}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+            <br>
+        <p class="text-end"><strong>Total: ₹{{cartTotal}}</strong></p>
+    </div>
+    <br><hr>
+    <!-- Payment Method Section -->
+    <div class="payment-method">
+        <h3>Payment Information</h3>
+        <form id="paymentForm">
+            <label for="cardName">Cardholder Name:</label>
+            <input type="text" id="cardName" name="cardName" required>
+
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" name="cardNumber" required>
+            <div class="d-flex flex-row gap-1">
+                <div class="w-50">
+                    <label for="expiryDate">Expiration Date:</label>
+                    <input type="month" id="expiryDate" name="expiryDate" required>        
+                </div>
+                <div class="w-50">
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" name="cvv" required>        
+                </div>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <h3>Billing Information</h3>
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="billingAddress">Billing Address:</label>
+            <input type="text" id="billingAddress" name="billingAddress" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="postalCode">Postal Code:</label>
+            <input type="text" id="postalCode" name="postalCode" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <button type="submit" class="mt-2">Place Order</button>
+        </form>
+    </div>
+</section>
+<script src="{% static 'js/payment.js' %}" defer></script>
+
+<!-- Footer Section -->
+{% include 'shop/footer.html' %}
+
+</body>
+</html>

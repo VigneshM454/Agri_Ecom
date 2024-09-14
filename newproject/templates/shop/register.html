@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        /* Embedded CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static 'images/reg.jpg' %}');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .register-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            width: 300px;
+        }
+        .register-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h1>Register</h1>
+        <form method="post" class="d-flex flex-column gap-1 ">
+            {% csrf_token %}
+            <label for="cname">Name</label>
+            <input class="px-2 py-1"  type="text" name="cname" id="cname">
+            <label for="cemail">Email</label>
+            <input class="px-2 py-1"  type="email" name="cemail" id="">
+            <label for="passwd">Password</label>
+            <input class="px-2 py-1"  type="password" name="password" id="passwd">
+            <button type="submit" class="btn btn-outline-success mt-1">Register</button>
+        </form>
+        <div class="redirect-link mt-2">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
